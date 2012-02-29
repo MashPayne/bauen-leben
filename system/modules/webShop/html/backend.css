@@ -1,0 +1,50 @@
+.ws_error {
+  color: #F00;
+  font-weight: bold;
+}
+
+.webShop_editCategory {
+	background-image:url(../../../themes/default/images/edit.gif);
+	background-position:left center;
+	background-repeat:no-repeat;
+	padding:2px 0 3px 20px;
+}
+
+.cte_type.published {
+	background-position: left top;
+}
+
+.variantItems .variantItem {
+	padding: 5px 5px;
+	border-bottom: 1px solid #ccc;
+	margin: 0px 5px 5px 0px;
+}
+
+.variantItem .ws_variantcontrols {
+  float: right;
+  text-align: right;
+}
+
+.variantItem .variantTitle {
+	font-weight: bold;
+}
+
+.variantItem.outOfStock {
+	border-color: #F00;
+	border-style: dotted;
+}
+
+.variantItems .noVariantWarning {
+	color: #F00;
+	font-weight: bold;
+	margin-top: 5px;
+}
+
+.header_update_attributes {
+	background: url("icons/update_attributes.png") no-repeat scroll left center transparent;
+    padding: 2px 0 3px 18px;
+}
+
+.tl_webshop_categories.tl_listing li {
+	padding: 0px;
+}

@@ -1,0 +1,38 @@
+<div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+
+  <?php if ($this->headline): ?>
+    <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+  <?php endif; ?>
+	
+	<div class="cartTransfer">
+		<?php print $GLOBALS['TL_LANG']['webShop']['cartSum']; ?>: <?php print formatPrice($this->cartPrice, true); ?>
+	</div>
+	  
+	<form action="<?php print $this->href; ?>" method="post">
+	    <input type="hidden" name="FORM_ACTION" value="webShopCheckout"/>
+      	<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}"/>
+    	<?php /* Coupon System */ ?>
+        <?php print $this->coupons; ?>	  
+	    <?php /* Coupon System END */ ?>		
+	
+	    <?php /* Addresses */ ?>
+	    <?php print $this->addresses; ?>
+	    <?php /* Addresses END */ ?>
+    
+    	<?php /* Shipping */ ?>
+    	<?php print $this->shipping; ?>
+		<?php /* Shipping END */ ?>
+	
+	  	<?php /* Payment System **/ ?>
+	   	<?php print $this->payment; ?>
+	  	<?php /* Payment System END */ ?>
+		
+    
+		<div class="checkOut">		
+		  <span class="button_left"><a class="submit" href="<?php print $this->lnkCart; ?>">&#8249; Warenkorb</a></span>
+		  <?php  if($this->checkoutOk): ?>
+		  <span class="button_right"><input id="btnContinue" class="submit" type="submit" name="checkoutContinue" value="Bestellübersicht &#8250;"/></span>
+		  <?php endif; ?>
+		</div>
+  </form>
+</div>

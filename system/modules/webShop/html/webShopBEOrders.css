@@ -1,0 +1,97 @@
+.clean {
+	clear: both;
+}
+
+.dataBlock {
+	margin-bottom: 8px;
+	margin-top: 4px;
+}
+
+h1.main_headline.addSpace {
+	margin-top: 15px;
+}
+
+.shippingAddress, .billingAddress {
+	float: left;
+	width: 200px;
+}
+
+.billingValue {
+	font-size: 13px;
+	font-weight: bold;
+	display: block;
+}
+
+.orderItems ul {
+	margin: 0px 5px;
+	padding: 0px;
+}
+
+.orderItems ul li {
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+	float: left;
+	display: block;
+}
+
+.orderItems ul.heading li {
+	font-weight: bold;
+	border-bottom: 1px solid #666;
+}
+.orderItems div {
+	padding: 2px 0px;
+}
+
+.orderItems div.clean {
+	padding: 0px;
+}
+
+.orderItems div.item_odd {
+	background-color: #F0F0F0;
+}
+
+li.articleID {
+	width: 145px;
+}
+
+li.articleName {
+	width: 256px;
+}
+
+li.articleQTY {
+	width: 60px;
+	text-align: center;
+}
+
+li.articlePrice {
+	width: 110px;
+	text-align: right;
+}
+
+li.articleSum {
+	width: 105px;
+	text-align: right;
+}
+
+div.coupon {
+	background-color: #43aa41;
+}
+
+li.couponCode {
+	line-height: 20px;
+	width: 575px;
+	color: #FFF;
+}
+
+li.couponValue {
+	line-height: 20px;
+	width: 105px;
+	text-align: right;
+	color: #FFF;
+}
+
+
+.itemComment {
+	font-weight: bold;
+}

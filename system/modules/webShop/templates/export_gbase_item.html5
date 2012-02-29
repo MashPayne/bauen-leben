@@ -1,0 +1,13 @@
+<item>
+	<title><![CDATA[<?php print $this->title; ?>]]></title>
+
+	<g:condition>neu</g:condition>
+	<description><![CDATA[<?php print $this->description; ?>]]></description>
+	<g:id><?php print $this->id; ?></g:id>
+	<g:image_link><?php print $this->image; ?></g:image_link>
+	<link><?php print $this->href; ?></link>
+	<g:mpn></g:mpn>
+	<g:price><?php print $this->price; ?></g:price>
+
+	<g:quantity>1</g:quantity>
+</item>

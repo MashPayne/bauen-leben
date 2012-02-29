@@ -1,0 +1,18 @@
+<div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+  <!--
+
+    Powered by Contao webShop Business Edition Version 2.2.2
+    Copyright ©2009-2011 by Stefan Gandlau <stefan@gandlau.net>
+    exclusively distributed by fruitMEDIA - Internetagentur in Lübeck
+    Visit the project website at http://www.contao-webshop.de for more information
+
+  -->
+  
+	<form action="<?php print $this->href; ?>" method="get">
+		<div class="formbody">
+			<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}"/>
+			<input type="hidden" name="guest" value="1"/>
+			<input type="submit" class="submit" value="<?php print $this->labelGuestContinue; ?>"/>
+		</div>
+	</form>
+</div>

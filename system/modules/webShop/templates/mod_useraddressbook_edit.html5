@@ -1,0 +1,19 @@
+<form action="<?php print $this->href; ?>" method="post">
+<div class="editAddress">
+	<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}"/>
+	<input type="hidden" name="FORM_SUBMIT" value="saveAddress"/>
+	<input type="hidden" name="FORM_ACTION" value="<?php print $this->formAction; ?>"/>
+	<input type="hidden" name="addressID" value="<?php print $this->addressid; ?>"/>
+	<table border="0" cellspacing="0" cellpadding="0">
+  <?php print join("\n", $this->formFields); ?>
+	<tr>
+		<td><?php print $GLOBALS['TL_LANG']['webShop']['primaryAddress']; ?></td>
+		<td><input type="checkbox" name="setPrimary"<?php if($this->isPrimary): print ' checked="checked"'; endif; ?>/></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td><input type="submit" class="submit" id="addressSubmit" value="<?php print $GLOBALS['TL_LANG']['MSC']['save']; ?>"/></td>
+	</tr>
+	</table>
+</div>
+</form>

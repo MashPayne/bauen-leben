@@ -1,0 +1,25 @@
+<?php
+  $lng = $GLOBALS['TL_LANG']['tl_webshop_article'];
+  $lngMisc = $GLOBALS['TL_LANG']['webShop'];	
+?>
+<div class="cte_type<?php print ($this->data['published'] == 1 ? ' published' : ' unpublished'); ?>">
+	<?php print $this->data['title']; ?>
+</div>
+
+
+<div class="limit_height<?php print (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h64' : ''); ?> block">
+  <?php if(!$this->isVariant): ?>
+    <b><?php print $lng['singlePrice'][0]; ?></b>: <?php printf('%s%s%s %s', $this->data['specialprice'] > 0 ? '<s style="color: #F00;">' : '', formatPrice($this->data['singlePrice'], true), $this->data['specialprice'] > 0 ? '</s>' : '', $this->data['specialprice'] > 0 ? formatPrice($this->data['specialprice'], true) : ''); ?><br/>
+  <?php endif; ?>
+	<?php if($this->data['productid']): ?>
+	  <b><?php print $lng['productid'][0]; ?></b>: <?php print $this->data['productid']; ?><br/>
+	<?php endif; ?>
+  <?php if($this->outOfStock): ?>
+    <div class="ws_error"><?php print $this->outOfStock; ?></div>
+  <?php endif; ?>
+	<?php if($this->isVariant): ?>
+	  <div class="variantItems">
+	  	<?php print $this->variants; ?>
+	  </div>
+	<?php endif; ?>
+</div>

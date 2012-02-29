@@ -1,0 +1,9 @@
+<?php if(is_array($this->arrOptions)): ?>
+  <select name="shippingMethod" class="ajaxElem" onChange="webShopCheckout.updateValue(this);">
+  <?php foreach($this->arrOptions as $shipping): ?>
+	  <option value="<?php print $shipping['id']; ?>"> <?php print $shipping['title'] .' ('. formatPrice($shipping['shippingFee'], true) .')'; ?></option>
+	<?php endforeach; ?>
+	</select>
+<?php else: ?>
+  <?php print $this->arrOptions; ?>
+<?php endif; ?>

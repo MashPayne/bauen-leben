@@ -1,0 +1,57 @@
+<?php if(!$this->noShipping): ?>
+  	<div class="shipping_address">
+	 	<h2><?php print $GLOBALS['TL_LANG']['webShop']['shippingAddress']; ?></h2>
+
+   		<?php if($this->guestOrder): ?>
+  			<div class="address_billing" style="width: 50%; float: left;">
+				<?php if($this->missingAddress): ?>
+					<input type="hidden" name="setGuestAddress" value="1"/>
+				<?php endif; ?>
+  				 	<?php if(count($this->errorBilling)):?>
+				 	<div class="webShop_billing_address_error">
+				 		<ul>
+					 		<?php foreach($this->errorBilling as $e): ?>
+					 			<li><?php print $e; ?></li>
+					 		<?php endforeach; ?>
+				 		</ul>
+				 	</div>
+				 	
+				 	<?php endif; ?>
+       			<strong>Rechnungsanschrift</strong>
+       			<?php print $this->frmBillingAddress; ?>
+   			</div>
+         
+   			<div class="address_shipping" style="float: right; width: 50%;">
+   				<?php if(count($this->errorShipping)):?>
+	 				<div class="webShop_shipping_address_error">
+	 					<ul>
+		 					<?php foreach($this->errorShipping as $e): ?>
+		 						<li><?php print $e; ?></li>
+		 					<?php endforeach; ?>
+	 					</ul>
+	 				</div>
+	 			<?php endif; ?>
+      			<strong>Lieferanschrift (falls abweichend)</strong>
+      			<?php print $this->frmShippingAddress; ?>
+   			</div>
+   			<div style="clear: both;"></div>
+   			<div class="address_confirm">
+   				<input class="submit" type="submit" id="ctrl_confirmAddress" value="<?php print $this->lblConfirmAddress; ?>"/>
+			</div>
+
+		<?php else: ?>
+      		<div class="shipping_address">
+				<div id="shippingAddr">
+       			<select name="shippingAddress" class="ajaxElem" onChange="if(this[this.selectedIndex].value == 'new') { document.location.href= '<?php print $this->linkAddressbook; ?>'; return(false); } this.form.submit();">
+					<optgroup label="Adressbuch">
+						<?php foreach($this->addresses as $id => $address): ?>
+							<option value="<?php print $id; ?>"<?php print $id == $this->shippingAddressId ? ' selected="selected"' : ''; ?>><?php print $address['formated']; ?></option>
+						<?php endforeach; ?>
+					</optgroup>
+					<option value="new"><?php print $GLOBALS['TL_LANG']['webShop']['addAddress']; ?></option>
+				</select>
+				</div>
+			</div>
+    	<?php endif; ?>
+    </div>
+<?php endif; ?>

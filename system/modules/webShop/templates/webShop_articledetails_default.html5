@@ -1,0 +1,226 @@
+<div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+  
+	<div class="leftRow">
+		<?php /** DETAIL IMAGE **/ ?>
+		<?php if(is_array($this->image)): ?>
+		<div class="articleImage">
+
+			<div id="imgNew" class="markAsNew" style="display: <?php print $this->markAsNew ? 'block' : 'none'; ?>"><img src="<?php print $this->markAsNewImage; ?>" alt="<?php print $GLOBALS['TL_LANG']['webShop']['newMarked']; ?>"/></div>
+
+			<div id="imgOffer" class="markAsOffer" style="display: <?php print $this->markAsOffer ? 'block' : 'none'; ?>"><img src="<?php print $this->markAsOfferImage; ?>" alt="<?php print $GLOBALS['TL_LANG']['webShop']['offerMarked']; ?>"/></div>
+
+
+			<?php if($this->galleryType == 'mojozoom'): ?>
+				<img class="articleImageSingle" id="articleImage" src="<?php print $this->image['thumb']; ?>" alt="<?php print $this->title; ?>"/>
+				<div<?php print $this->isSample ? ' style="display: block;"' : ' style="display: none;"'; ?> id="isSample">Abbildung ähnlich</div>
+			<?php else: ?>
+				<a id="articleImageLink" title="<?php print $this->title; ?>" rel="lightbox" href="<?php print $this->image['full']; ?>"><img id="articleImage" src="<?php print $this->image['thumb']; ?>" alt="<?php print $this->title; ?>"/></a>
+				<div<?php print $this->isSample ? ' style="display: block;"' : ' style="display: none;"'; ?> id="isSample">Abbildung ähnlich</div>
+			<?php endif; ?>
+		</div>
+		<?php endif; ?>
+		
+		<?php if($this->showSlider): ?>
+			<script type="text/javascript">
+		      window.addEvent('domready', function() {
+		        new imageSlide({ctrl_data: 'imageSliderData', cls_single: '.imageSliderSingle', imagesPerSlide: 3, ctrl_viewer: $('articleImage'), enableZoom: <?php print $this->galleryType == 'mojozoom' ? 'true' : 'false'; ?>});
+		      });
+		    </script>
+		    
+		    <div class="is_container" id="is_container">
+		
+		      <div id="is_slider" class="is_slider">
+		        <div id="is_btnPrev" class="is_btnPrev"></div>
+		        <div id="is_sliderContainer" class="is_sliderContainer">
+		          <div id="is_sliderInner" class="is_sliderInner">
+		
+		          </div>
+		        </div>
+		        <div id="is_btnNext" class="is_btnNext"></div>
+		      </div>
+		    </div>
+		    <div class="imageSlider" id="imageSliderData" style="display: none;">
+		      <?php foreach($this->arrImages as $index => $image): ?>
+		        <div class="imageSliderSingle">
+		          <a class="is_thumb" href="<?php print $image['mini']; ?>"></a>
+		          <a class="is_big" href="<?php print $image['thumb']; ?>"></a>
+		          <a rel="lightbox[1]" title="<?php echo $image['full']; ?>" class="is_full" href="<?php print $image['orig']; ?>"></a>
+		        </div>
+		      <?php endforeach; ?>
+		    </div>
+		<?php endif; ?>
+		
+		
+		<?php if(is_array($this->variantLinks)): ?>
+		<div class="variantLinks"><?php foreach($this->variantLinks as $lnk): if(!strlen($lnk['singleSRC'])) continue; ?><img onClick="webShopAjax.updateVariantSelection(<?php print $lnk['pid']; ?>, <?php print $lnk['id']; ?>);" src="<?php print $lnk['singleSRC']; ?>" title="<?php print $lnk['title']; ?>" alt="<?php print $lnk['alt']; ?>"/><?php endforeach; ?></div>
+		<?php endif; ?>
+		
+
+    <?php if(count($this->productgroups)): ?>
+    <div class="groupLink">
+    	<div class="groupLink_label"><?php print $GLOBALS['TL_LANG']['webShop']['group_more']; ?></div>
+		<div class="groupLink_href">
+		<ul>
+		<?php foreach($this->productgroups as $grp): ?>
+    	<li><a href="<?php print $grp['href']; ?>"><?php print $grp['title']; ?></a></li>
+    	<?php endforeach; ?>
+		</ul>
+		</div>
+    </div>
+	<?php endif; ?>
+	
+	</div>
+	
+
+	<div class="rightRow">
+		<?php if($this->mojozoom):?>
+			<div id="zoomArea"></div>
+		<?php endif; ?>
+		<h1><?php print $this->title; ?></h1>
+		<h2 class="articleTeaser"><?php print $this->teaser; ?></h2>
+		<div class="articleNumber" id="articleNumber"><?php print $this->productid; ?></div>
+
+		<form action="<?php print $this->href; ?>" method="get" id="frmArticle">
+			<div class="formBody">
+				<input type="hidden" id="ajax_token" name="REQUEST_TOKEN" value="{{request_token}}"/>
+				<input type="hidden" name="isAjax" value="<?php print $GLOBALS['TL_CONFIG']['webShop_ajaxCart'] ? '1' : ''; ?>" id="ctrl_isAjax"/>
+				<input type="hidden" name="changedBy" value="" id="ctrl_changedBy"/>
+				<?php if($this->variants): ?>
+					<div class="articleAttributes">
+						<h2><?php print $this->lbl_singleAttributeHeadline; ?></h2>
+						<div id="articleVariantSelector">
+						  <?php print $this->variants; ?>
+						</div>
+					</div>
+				<?php endif; ?>
+				<?php if($this->options): ?>
+				  <div class="articleOptions">
+				  	<?php print $this->options; ?>
+					</div>
+				<?php endif; ?>
+
+				<div id="articleBlockPriceList">
+					<?php if(strlen($this->blockPrices)): ?>
+						<?php print $this->blockPrices; ?>
+					<?php endif; ?>
+				</div>
+
+				<div class="articlePrices" id="prices">
+		          <?php print $this->prices; ?>
+		        </div>
+				<div id="articleDelivery">
+					<?php print $this->delivery; ?>
+				</div>
+				<input type="hidden" name="FORM_ACTION" id="frmFORM_ACTION" value="webShopAddCartItem"/>
+				<input type="hidden" name="articleid" value="<?php print $this->articleid; ?>"/>
+				<input type="hidden" id="acticlevariant" name="articlevariant" value="<?php print $this->articlevariant; ?>"/>
+				<input type="text" class="webShopQTY" value="1" name="articleqty"/>
+				<input type="button" id="btnAddToCart" value="<?php print $this->lbl_addToCart; ?>" class="webShopSubmitBtn submit"/>
+				<span id="frmArticle_spinner"></span>
+    			<div id="lbl_itemAdded" style="display: <?php print $this->itemAdded ? 'block' : 'none'; ?>" class="webShop_info"><?php print $this->itemAddedText; ?></div>
+			</div>
+		</form>
+		
+	  	<div class="webShop_social">
+		<?php if($GLOBALS['TL_CONFIG']['webShop_twitter']): ?>
+			<span class="twitter">
+			<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-lang="de">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+			</span>
+		<?php endif; ?>
+		<?php if($GLOBALS['TL_CONFIG']['webShop_facebook']): ?>
+			<span class="facebook">
+			<iframe src="http://www.facebook.com/plugins/like.php?href=<?php print urlencode($this->url); ?>&amp;layout=button_count&amp;show_faces=false&amp;width=300&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:390px; height:20px;" allowTransparency="true"></iframe>
+			</span>
+		<?php endif;?>
+	</div>
+
+		<div id="articleDescription" class="articleDescription">
+			<?php print $this->text; ?>
+		</div>
+	<?php if($this->html): ?>
+	<?php print $this->html; ?>
+	<?php endif; ?>
+		<?php if($this->tabtext): ?>
+			<?php print $this->tabtext; ?>
+		<?php endif; ?>
+		
+  </div>
+  
+  	<?php if($this->showSlider): ?>
+  		<script type="text/javascript">
+  			var gImages = [];
+  			<?php foreach($this->arrImages as $index => $image): ?>
+			gImages[<?php print $index; ?>] = ['<?php print $image['thumb']; ?>', '<?php print $this->galleryType == 'mojozoom' ? $image['orig'] : $image['full']; ?>'];
+  			<?php endforeach; ?>
+  		</script>
+  	<?php endif; ?>
+  
+		<?php /** MOJO ZOOM **/ ?>
+		<?php if($this->galleryType == 'mojozoom'): ?>
+			<script type="text/javascript">
+			<!--//--><![CDATA[//><!--
+		      var mojoZoomBigImage = '<?php print $this->image['full']; ?>';
+
+		      function changeZoomImage(ctrlImage, imgFull) {
+		        MojoZoom.makeZoomable(
+		          ctrlImage,
+		          imgFull,
+		          $('zoomArea'),
+		          398, 260,
+		          false
+		        );
+		      }
+
+		      function changeMainImage(id) {
+				    var i = new Image();
+				    i.src = gImages[id][0];
+				    $('articleImage').src = i.src;
+  		      }
+		      
+		      window.addEvent('load', function() {
+		        changeZoomImage($('articleImage'), '<?php print $this->image['orig']; ?>');
+		      })
+		      //--><!]]>
+		    </script>
+		    
+		<?php else: ?>
+		  
+		<?php endif; ?>
+
+			<script type="text/javascript">
+			<!--//--><![CDATA[//><!--
+			
+				
+				var spinnerImage = null;
+				var spinnerTarget = $('frmArticle_spinner');
+			    var objArticleForm = null;
+				<?php if($GLOBALS['TL_CONFIG']['webShop_ajaxCart']): ?>		
+			    window.addEvent('domready', function() {
+					$('btnAddToCart').addEvent('click', function() {
+						webShopAjax.submitForm(true);
+					});
+					
+					spinnerImage = new Element('img', {
+						'src': 'tl_files/images/ajax-loader.gif',
+						styles: {
+							'opacity': 0
+						}
+					});
+	
+					spinnerImage.injectInside(document.body);
+
+				});
+				
+				<?php else: ?>
+
+			    window.addEvent('domready', function() {
+					$('btnAddToCart').addEvent('click', function() {
+						webShopAjax.submitForm(false);
+					});
+				});
+
+			    <?php endif; ?>
+			//--><!]]>
+			</script>
+		
+</div>

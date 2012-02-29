@@ -1,0 +1,122 @@
+
+	
+	<h1 class="main_headline addSpace"><?php print $this->label['common']; ?></h1>
+	
+	<div class="dataBlock">
+		<?php print $GLOBALS['TL_LANG']['tl_webshop_orders']['orderid']; ?>: <?php print $this->orderId; ?><br/>
+		<?php print $GLOBALS['TL_LANG']['tl_webshop_orders']['orderDate']; ?>: <?php print date('d.m.Y - H:i', $this->orderDate); ?><br/>
+		<?php print $GLOBALS['TL_LANG']['tl_webshop_orders']['customerIp']; ?>: <?php print $this->customerIp; ?><br/>
+		<br/>
+		<?php print $GLOBALS['TL_LANG']['tl_webshop_orders']['lastBEChange']; ?>: <?php print date('d.m.Y - H:i', $this->ts); ?><br/><br/>
+		<?php if(strlen($this->customerMsg)): ?>
+		<?php print $GLOBALS['TL_LANG']['tl_webshop_orders']['customerMsg']; ?>:<br/>
+		<?php print str_replace("\n", "<br/>", $this->customerMsg); ?>
+		<?php endif; ?>
+	</div>
+	
+  <h1 class="main_headline addSpace"><?php print $this->label['customer']; ?></h1>
+	
+  <div class="dataBlock">
+    
+    <div class="billingAddress">
+      <b><?php print $this->label['billing']; ?></b><br/>
+      <?php if($this->paymentAddress['company']): ?>
+      <?php print $this->paymentAddress['company']; ?><br/>
+      <?php endif; ?>
+      <?php printf('%s %s<br/>%s<br/>%s-%s %s%s', $this->paymentAddress['firstname'], $this->paymentAddress['lastname'], $this->paymentAddress['street'], ucfirst($this->paymentAddress['country']), $this->paymentAddress['postal'], $this->paymentAddress['city'], $this->paymentAddress['phone'] ? '<br/>Telefon: '. $this->paymentAddress['phone'] : ''); ?>
+    </div>
+		    
+    <div class="shippingAddress">
+      <b><?php print $this->label['shipping']; ?></b><br/>
+      <?php if($this->shippingAddress['company']): ?>
+      <?php print $this->shippingAddress['company']; ?><br/>
+      <?php endif; ?>
+      <?php printf('%s %s<br/>%s<br/>%s-%s %s<br/>', $this->shippingAddress['firstname'], $this->shippingAddress['lastname'], $this->shippingAddress['street'], ucfirst($this->shippingAddress['country']), $this->shippingAddress['postal'], $this->shippingAddress['city']); ?>
+    </div>
+
+
+		<?php if($this->userdata['bankname'] != ''): ?>
+		<div class="shippingAddress">
+			<b><?php print $GLOBALS['TL_LANG']['tl_webshop_orders']['bankinfo']; ?></b><br/>
+			<?php print $GLOBALS['TL_LANG']['tl_webshop_orders']['bankname']; ?>: <?php print $this->userdata['bankname']; ?><br/>
+			<?php print $GLOBALS['TL_LANG']['tl_webshop_orders']['banknumber']; ?>: <?php print $this->userdata['banknumber']; ?><br/>
+			<?php print $GLOBALS['TL_LANG']['tl_webshop_orders']['bankaccount']; ?>: <?php print $this->userdata['bankaccount']; ?><br/>
+		</div>
+		<?php endif; ?>
+
+    <div class="clean"></div>
+
+  </div>
+
+  <h1 class="main_headline"><?php print $this->label['items']; ?></h1>
+  
+  <div class="dataBlock orderItems">
+    <ul class="heading">
+      <li class="articleID"><?php print $this->label['articleID']; ?></li>
+      <li class="articleName"><?php print $this->label['articleName']; ?></li>
+      <li class="articleQTY"><?php print $this->label['articleQTY']; ?></li>
+      <li class="articlePrice"><?php print $this->label['articlePrice']; ?></li>
+      <li class="articleSum"><?php print $this->label['articleSum']; ?></li>
+    </ul>
+    <div class="clean"></div>
+    <?php $x = 1; foreach($this->items as $item): $x++; ?>
+      <div class="item_<?php print $x % 2 ? 'odd' : 'even'; ?>">
+        <ul>
+          <li class="articleID"><a href="<?php print $item['href']; ?>"><?php print $item['articleid']; ?>&nbsp;</a></li>
+          <li class="articleName"><?php printf('%s%s<br/>%s%s', $item['title'], strlen($item['subtitle']) ? ' - '. $item['subtitle'] : '', $item['teaser'], strlen($item['comment']) ? '<br/><span class="itemComment">'. $item['comment'] .'</span>': ''); ?><?php print strlen($item['options']) ? '<br/>'. $item['options'] : ''; ?></li>
+          <li class="articleQTY"><?php print $item['qty']; ?></li>
+          <li class="articlePrice"><?php print $item['singlePrice']; ?></li>
+          <li class="articleSum"><?php print $item['sum']; ?></li>
+        </ul>
+        <div class="clean"></div>
+      </div>
+    <?php endforeach; ?>
+    <?php if(count($this->coupons) > 0): ?>
+      <?php foreach($this->coupons as $coupon): ?>
+			  <div class="coupon">
+				  <ul>
+				  	<li class="couponCode">Coupon: <?php print $coupon['code']; ?></li>
+						<li class="couponValue"><?php print $coupon['amount']; ?></li>
+				  </ul>
+					<div class="clean"></div>
+				</div>
+      <?php endforeach; ?>
+    <?php endif; ?>
+  </div>
+	
+	<h1 class="main_headline"><?php print $this->label['payment']; ?></h1>
+  
+  <div class="dataBlock">
+	  <div class="shippingOverview">
+      <?php if($this->shipping['shippingPriceType'] != 'shippingInfo'): ?>
+			  <?php print $GLOBALS['TL_LANG']['tl_webshop_orders']['shipping']; ?>: <?php print $this->shipping['title']; ?> (<?php print $this->shipping['shippingFee']; ?>)
+      <?php else: ?>
+			  <?php print $GLOBALS['TL_LANG']['tl_webshop_orders']['shipping']; ?>: <?php print $this->shipping['shippingInfo']; ?>
+      <?php endif; ?>
+	    <div class="clean"></div>
+	  </div>
+	  
+	  <div class="paymentOverview">
+	    <?php print $GLOBALS['TL_LANG']['tl_webshop_orders']['paymentMethod']; ?>: <?php print $this->payment['title']; ?> (<?php print $this->payment['paymentFee']; ?>) 
+	  </div>
+	  
+  </div>
+  
+  <h1 class="main_headline"><?php print $this->label['prices']; ?></h1>
+  
+  <div class="dataBlock">
+    
+    <span class="billingValue"><?php print $GLOBALS['TL_LANG']['tl_webshop_orders']['billingValue']; ?>: <?php print $this->billingValue; ?></span>
+    <?php if(is_array($this->taxes) && count($this->taxes)): ?>
+      <?php foreach($this->taxes as $tax): if($tax['sum'] == 0) continue; ?>
+        <span class="taxTitle"><?php print $tax['calcBrutto'] ? 'inkl.' : 'exkl.'; ?> <?php print $tax['title']; ?> (<?php print $tax['tax_rate'] / 1; ?>%)</span>: <span class="taxValue"><?php print $tax['sum']; ?></span><br/>
+      <?php endforeach; ?>
+    <?php endif; ?>
+    
+
+		<?php if(strlen($this->vat)): ?>
+		  <?php print $GLOBALS['TL_LANG']['tl_webshop_orders']['customerVAT']; ?>: <?php print $this->vat; ?>
+		<?php endif; ?>
+		
+  </div>
+  

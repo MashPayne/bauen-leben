@@ -1,0 +1,123 @@
+<div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+  <!--
+
+    Powered by Contao webShop Community Edition Version 2.3.1
+    Copyright ©2009-2011 by Stefan Gandlau <stefan@gandlau.net>
+    exclusively distributed by fruitMEDIA - Internetagentur in Lübeck
+    Visit the project website at http://www.contao-webshop.de for more information
+
+  -->
+  <?php if ($this->headline): ?>
+    <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+  <?php endif; ?>
+
+  <?php if($this->cartWarnings): ?>
+	  <div class="webShopWarnings">
+		  <?php print $GLOBALS['TL_LANG']['webShop']['cart_attention']; ?><br/>
+		  <ul>
+		  	<?php foreach($this->cartWarnings as $warning): ?>
+				  <li><?php print $warning; ?></li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	<?php endif; ?>
+
+  <ul class="webShop_cartHeading">
+  	<li class="cartItemImage">&nbsp;</li>
+		<li class="cartItemTitle"><?php print $GLOBALS['TL_LANG']['webShop']['lbl_article']; ?></li>
+		<li class="cartItemQTY"><?php print $GLOBALS['TL_LANG']['webShop']['lbl_qty']; ?></li>
+		<li class="cartItemSinglePrice"><?php print $GLOBALS['TL_LANG']['webShop']['lbl_singlePrice']; ?></li>
+		<li class="cartItemTotalPrice"><?php print $GLOBALS['TL_LANG']['webShop']['lbl_priceSum']; ?></li>
+  </ul>
+	<div class="clean"></div>
+	<form action="<?php print $this->href; ?>" method="post">
+		<div class="formbody">
+			<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}"/>
+		<input type="hidden" name="FORM_ACTION" value="webShopUdateCart"/>
+		
+	<?php if(count($this->cartItems) > 0): foreach($this->cartItems as $index => $item): ?>
+	  <ul class="webShop_cartItem<?php print $item->allowComment ? ' removeLine' : ''; ?>">
+	    <li class="cartItemImage">
+	    	<?php if(strlen($item->thumb)): ?>
+	    	  <a href="<?php print $item->href; ?>"><img src="<?php print $item->thumb; ?>" alt="<?php print $item->title; ?>"/></a>
+				<?php endif; ?>
+			</li>
+			<li class="cartItemTitle">
+				<span class="articleTitle"><a href="<?php print $item->href; ?>"><?php print $item->title; ?></a></span><br>
+				<span class="articleTeaser"><?php print $item->teaser; ?></span><br>
+				<span class="articleNumber"><?php print $GLOBALS['TL_LANG']['webShop']['lbl_productid']; ?>: <?php print $item->productid; ?></span>
+				
+
+			</li>
+	    <li class="cartItemQTY">
+	    	<div class="cartItemQTY_input first"><input type="text" class="itemQTY" name="itemQTY[<?php print $index; ?>]" value="<?php print $item->qty; ?>"/></div>
+			<div class="cartItemQTY_input"><input class="updateCart" type="image" src="tl_files/images/button_ok.gif"/></div>
+			<div class="cartItemQTY_input"><input class="btnRemoveItem" type="image" src="tl_files/images/button_delete.gif" name="cartItemRemove[<?php print $index; ?>]"/></div>
+	    </li>
+	    <li class="cartItemSinglePrice">
+	    	<?php print formatPrice($item->price, true); ?>
+	    </li>
+	    <li class="cartItemTotalPrice">
+	    	<?php print formatPrice($item->sum, true); ?>
+	    </li>
+	  </ul>
+		<?php if($item->allowComment): ?>
+		<ul class="webShop_cartItem">
+		
+	    <li class="cartItemImage">
+			&nbsp;
+		</li>
+		<li class="cartItemTitle">
+			<label class="webShop_itemCommentHeadline"><?php print $GLOBALS['TL_LANG']['webShop']['lbl_comment']; ?></label>
+			<textarea name="itemComment[<?php print $index; ?>]" class="webShop_itemComment"><?php print $item->comment; ?></textarea>
+		</li>
+	    <li class="cartItemQTY">
+			&nbsp;
+	    </li>
+	    <li class="cartItemSinglePrice">
+	    	&nbsp;
+	    </li>
+	    <li class="cartItemTotalPrice">
+	    	&nbsp;
+	    </li>
+	    
+	    
+		
+		</ul>
+		<?php endif; ?>
+		
+		<div class="clean"></div>
+  
+	<?php endforeach; else: ?>
+	
+	  <ul class="webShop_noCartItems">
+		  <li class="cartInfo"><?php print $GLOBALS['TL_LANG']['webShop']['lbl_emptyCart']; ?></li>
+	  </ul>
+	
+	<?php endif; ?>
+	  <div class="clean"></div>
+	
+
+	
+	<ul class="webShop_total">
+		<li class="totalPrice"><label><?php print $GLOBALS['TL_LANG']['webShop']['lbl_priceSum']; ?>:</label> <?php print formatPrice($this->totalPrice, true); ?></li>
+		<?php foreach($this->taxes as $tax): if($tax['sum'] == 0) continue; ?>
+		  <li class="taxes"><label><?php print $tax['showBrutto'] ? 'enthält ':'zzgl. '; ?><?php print ($tax['tax_rate'] / 1); ?>% <?php print $GLOBALS['TL_LANG']['webShop']['tax']; ?>:</label> <?php print formatPrice($tax['sum'], true); ?></li>
+		<?php endforeach; ?>
+		<?php if(!$tax['showBrutto']): ?>
+		  <li class="totalPriceAddTax"><label><?php print $GLOBALS['TL_LANG']['webShop']['lbl_total']; ?>:</label> <?php print formatPrice($this->totalPrice + $this->totalTax, true); ?></li>
+		<?php endif; ?>
+	</ul>
+	
+	<?php if(count($this->cartItems) > 0): ?>
+		<span class="button_left">
+			<input class="submit" type="button" onclick="document.location.href='<?php print $this->lnkContinue; ?>'" value="&#8249; weiter einkaufen"/>
+		</span>
+		<span class="button_right">
+			<input type="submit" name="doCheckout" value="zur Kasse &#8250;" class="submit"/>
+		</span>
+	<?php endif; ?>
+	</div>
+  </form>
+
+</div>

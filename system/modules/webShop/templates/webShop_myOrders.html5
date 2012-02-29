@@ -1,0 +1,28 @@
+<div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+  <?php if ($this->headline): ?>
+    <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+  <?php endif; ?>
+
+  <ul class="orderHeadline">
+  	<li class="orderId orderCol">Bestellnummer</li>
+    <li class="orderDate orderCol">Bestelldatum</li>
+    <li class="orderSum orderCol">Gesamtsumme</li>
+    <li class="orderStatus orderCol">Status</li>
+	<li class="orderInfo">&nbsp;</li>
+  </ul>
+	
+  <?php if(count($this->items)): ?>
+	  <?php foreach($this->items as $item): ?>
+		  <ul class="orderBody">
+		  	<li class="orderId orderCol"><a class="submit" href="<?php print $item['details']; ?>"><?php print $item['id']; ?></a></li>
+		  	<li class="orderDate orderCol"><?php print date('d.m.Y', $item['datim']); ?></li>
+			<li class="orderSum orderCol"><?php print formatPrice($item['billingValue'], true); ?></li>
+			<li class="orderStatus orderCol"><?php print $GLOBALS['TL_LANG']['tl_webShop_orders']['orderState'][$item['orderStatus']]; ?></li>
+			<li class="orderInfo"><a href="<?php print $item['details']; ?>"><img src="system/themes/default/images/show.gif"></a></li>
+		  </ul>
+		<?php endforeach; ?>
+	<?php else: ?>
+	  <div class="noOrders">Sie haben bisher keine Bestellungen aufgegeben.</div>
+	<?php endif; ?>
+
+</div>

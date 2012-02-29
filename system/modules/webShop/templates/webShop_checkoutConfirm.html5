@@ -1,0 +1,170 @@
+<div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+
+  <?php if ($this->headline): ?>
+    <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+  <?php endif; ?>
+  
+  <div class="shoppingOverview">
+    <ul class="heading">
+      <li class="articleName"><?php print $GLOBALS['TL_LANG']['webShop']['lbl_article']; ?></li>
+      <li class="articleQTY"><?php print $GLOBALS['TL_LANG']['webShop']['lbl_qty']; ?></li>
+      <li class="articlePrice"><?php print $GLOBALS['TL_LANG']['webShop']['lbl_singlePrice']; ?></li>
+      <li class="articleSum"><?php print $GLOBALS['TL_LANG']['webShop']['lbl_priceSum']; ?></li>
+    </ul>
+		<div style="clear: both;"></div>
+		
+  	<?php if(count($this->items)): $x = 1; foreach($this->items as $item): $x++; ?>
+		  <ul class="item_<?php print ($x % 2 ? 'odd' : 'even'); ?>">
+	      <li class="articleName">
+	      	<?php print $item->title; ?>
+			<?php if($item->type == 'articleVariants'): print ' - '. $item->subtitle; endif; ?><br/><?php print $item->teaser; ?>
+			<?php if($item->allowComment && strlen($item->comment)): print '<div class="itemComment">'. $item->comment; ?></div><?php endif;?>
+				</li>
+	      <li class="articleQTY"><?php print $item->qty; ?></li>
+	      <li class="articlePrice"><?php print formatPrice($item->price, true); ?></li>
+	      <li class="articleSum"><?php print formatPrice($item->sum, true); ?></li>
+	    </ul>
+			<div style="clear: both;"></div>
+    <?php endforeach; endif; ?>
+		
+  	<ul class="shoppingTotal">
+			<li class="articlePriceLabel"><?php print $GLOBALS['TL_LANG']['webShop']['subtotal']; ?></li>
+			<li class="articlePriceValue"><?php print formatPrice($this->articleSum, true); ?></li>
+		</ul>  	
+		<div style="clear: both;"></div>
+		
+  </div>
+	<div class="discountOverview">
+    <div class="coupons">
+      <?php if(count($this->coupons)): foreach($this->coupons as $coupon): ?>
+      <ul>
+        <?php if(stristr($coupon['amount'], '%')): ?>
+        	<li class="couponLabel"><?php print $coupon['code']; ?> <?php print $coupon['amount']; ?></li>
+        	<li class="couponValue"><?php print formatPrice($coupon['value'], true); ?></li>
+        <?php else: ?>
+        	<li class="couponLabel"><?php print $coupon['code']; ?></li>
+        	<li class="couponValue"><?php print formatPrice($coupon['amount'], true); ?></li>
+        <?php endif; ?>
+      </ul>
+      <?php endforeach; ?>
+        <ul class="shoppingTotal">
+          <li class="articlePriceLabel"><?php print $GLOBALS['TL_LANG']['webShop']['subtotal']; ?></li>
+          <li class="articlePriceValue"><?php print formatPrice($this->articleSumCoupon, true); ?></li>
+        </ul>   
+      <?php endif; ?>
+      <div class="clean"></div>
+    </div>
+    
+    <div class="discounts">
+      <?php if(count($this->discounts)): foreach($this->discounts as $discount): ?>
+        <ul>
+          <li class="discountLabel"><?php print $discount[0]; ?></li>
+          <li class="discountValue"><?php print formatPrice($discount[1], true); ?></li>
+        </ul>
+      <?php endforeach; endif; ?>
+      <div class="clean"></div>
+    </div>
+  </div>
+  
+	<div class="shippingOverview">
+		<ul>
+			<?php if($this->shipping['shippingPriceType'] != 'shippingInfo'): ?>
+				<li class="shippingLabel"><?php print $GLOBALS['TL_LANG']['webShop']['shippingMethod']; ?>: <?php print $this->shipping['title']; ?></li>
+				<li class="shippingPrice"><?php print formatPrice($this->shipping['shippingFee'], true); ?></li>
+			<?php else: ?>
+			  <li class="shippingLabel"><?php print $GLOBALS['TL_LANG']['webShop']['shippingMethod']; ?>: <?php print $this->shipping['shippingInfo']; ?></li>
+        <li class="shippingPrice">-</li>
+			<?php endif; ?>
+		</ul>
+		<div class="clean"></div>
+	</div>
+	
+	<div class="paymentOverview">
+		<ul>
+			<li class="paymentLabel"><?php print $GLOBALS['TL_LANG']['webShop']['paymentMethod']; ?>: <?php print $this->payment['title']; ?></li>
+			<li class="paymentPrice"><?php print formatPrice($this->payment['paymentFee'], 2); ?></li>
+		</ul>
+		<div class="clean"></div>
+	</div>
+	
+	
+	<div class="overviewTotal">
+	  <ul>
+	    <li class="totalLabel"><?php print $GLOBALS['TL_LANG']['webShop']['lbl_total']; ?></li>
+		  <li class="totalValue"><?php print formatPrice($this->sum, true); ?></li>
+		</ul>
+		<div class="clean"></div>
+		<div class="taxes">
+			<?php if($this->calcBrutto && count($this->taxes)): foreach($this->taxes as $tax): if($tax['sum'] == 0) continue; ?>
+			  <ul>
+			  	<li class="taxLabel"><?php print $this->taxExInc .' '. ($tax['tax_rate']  * 1); ?>% <?php print $GLOBALS['TL_LANG']['webShop']['tax']; ?></li>
+					<li class="taxSum"><?php print formatPrice($tax['sum'], true); ?></li>
+			  </ul>
+				<div class="clean"></div>
+			<?php endforeach; endif; ?>
+		</div>
+	  <ul class="overviewBilling">
+	    <li class="billingLabel"><?php print $GLOBALS['TL_LANG']['webShop']['billingValue']; ?></li>
+			<li class="billingValue"><?php print formatPrice($this->paymentSum, true); ?></li>
+	  </ul>
+		<div class="clean"></div>
+  </div>
+	
+  <div class="addresses">
+	  <div class="billingAddress">
+      <b><?php print $GLOBALS['TL_LANG']['webShop']['billingAddress']; ?></b><br/>
+      <?php if($this->paymentAddress['company']): ?>
+      <?php print $this->paymentAddress['company']; ?><br/>
+      <?php endif; ?>
+      <?php printf('%s %s<br/>%s<br/>%s-%s %s<br/>', $this->paymentAddress['firstname'], $this->paymentAddress['lastname'], $this->paymentAddress['street'], ucfirst($this->paymentAddress['country']), $this->paymentAddress['postal'], $this->paymentAddress['city']); ?>
+    </div>
+  	<div class="shippingAddress">
+  		<b><?php print $GLOBALS['TL_LANG']['webShop']['shippingAddress']; ?></b><br/>
+  		<?php if($this->shippingAddress['company']): ?>
+			<?php print $this->shippingAddress['company']; ?><br/>
+			<?php endif; ?>
+			<?php printf('%s %s<br/>%s<br/>%s-%s %s<br/>', $this->shippingAddress['firstname'], $this->shippingAddress['lastname'], $this->shippingAddress['street'], ucfirst($this->shippingAddress['country']), $this->shippingAddress['postal'], $this->shippingAddress['city']); ?>
+    </div>
+		<div class="clean"></div>
+	</div>	
+
+		
+	<div class="checkoutConfirm">
+		<form action="<?php print $this->href; ?>" method="post" id="frmCheckoutConfirm">
+			<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}"/>
+	    <div class="customerComment">
+	    	<b><?php print $GLOBALS['TL_LANG']['webShop']['customerMsg']; ?>:</b><br/>
+	      <textarea name="customerMessage" class="customerCommentArea"><?php print $this->customerMessage; ?></textarea>
+	    </div>
+			
+			<div class="agbText">
+	      <?php print $this->agbText; ?>
+	    </div>
+		<div>
+			<?php if($this->agbwarn): ?>
+			  <p class="error"><?php print $GLOBALS['TL_LANG']['webShop']['checkout_error']['terms']; ?></p>
+			<?php endif; ?>
+			<input class="arc" type="checkbox" id="agb" name="agb" value="agb"<?php print $this->agbChecked ? ' checked="checked"' : ''; ?>><label for="agb">Allgemeine Geschäftsbedingungen akzeptiert</label><br/>
+			<?php if($this->cancellationwarn): ?>
+			  <p class="error"><?php print $GLOBALS['TL_LANG']['webShop']['checkout_error']['cancellation']; ?></p>
+			<?php endif; ?>
+		  <input class="arc" type="checkbox" id="cancellation" name="cancellation"<?php print $this->cancellationChecked ? ' checked="checked"' : ''; ?>/><label for="cancellation">Widerrufsbelehrung anerkannt</label>
+      </div>
+	  <div class="checkOut"> 
+			<input type="hidden" name="FORM_ACTION" value="submitOrder"/>
+			
+			<span class="button_left"><input class="submit" type="button" onclick="window.location.href='<?php print $this->lnkBack['href']; ?>';" value="&#8249; <?php print $this->lnkBack['title']; ?>"/></span>
+			<span class="button_right"><input type="submit" class="submit" value="<?php print $GLOBALS['TL_LANG']['webShop']['btn_orderConfirm']; ?> &#8250;"/></span>
+      </div>
+		</form>
+	</div>
+	
+	
+  <script type="text/javascript">
+		<!--//--><![CDATA[//><!--
+			window.addEvent('domready', function() {
+	      initARC('frmCheckoutConfirm', false, false, 'checkboxOn', 'checkboxOff');
+			});
+		//--><!]]>
+  </script>
+</div>

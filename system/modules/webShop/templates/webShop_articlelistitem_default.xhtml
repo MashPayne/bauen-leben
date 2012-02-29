@@ -1,0 +1,26 @@
+<div class="articleListItem<?php print ' webShop_'. $this->cssClass; ?>">
+
+	<?php if(strlen($this->thumbnail)): ?>
+  	<div class="articleImage">
+
+		<?php if(strlen($this->markAsNew)): ?>
+		<div class="markAsNew"><img src="<?php print $this->markAsNew; ?>" alt="<?php print $GLOBALS['TL_LANG']['webShop']['newMarked']; ?>"/></div>
+		<?php endif; ?>
+
+		<?php if(strlen($this->markAsOffer)): ?>
+		<div class="markAsOffer"><img src="<?php print $this->markAsOffer; ?>" alt="<?php print $GLOBALS['TL_LANG']['webShop']['offerMarked']; ?>"/></div>
+		<?php endif; ?>
+
+	<a href="<?php print $this->href; ?>"><img src="<?php print $this->thumbnail; ?>" alt="<?php print $this->title; ?>"/></a>
+
+	</div>
+	<?php endif; ?>
+
+	<div class="articleTitle"><a href="<?php print $this->href; ?>"><?php print $this->title; ?></a></div>
+	<div class="articleTeaser"><a href="<?php print $this->href; ?>"><?php print $this->teaser; ?></a></div>
+
+  <div class="articlePrices">
+    <?php print $this->prices; ?>
+  </div>
+	
+</div>

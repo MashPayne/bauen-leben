@@ -1,0 +1,15 @@
+<?php  if(!$this->guestOrder || ($this->guestOrder && $this->addressOK)): ?>
+    <div class="shipping_method">
+	    <h2><?php print $GLOBALS['TL_LANG']['webShop']['shippingMethod']; ?></h2>
+		<div id="shippingData">
+       		<?php if(count($this->shippings) > 0): foreach($this->shippings as $id => $shipping): ?>
+       			<div class="shippingSingleOption">
+       				<input id="ctrl_shipping_<?php print $shipping['id']; ?>" name="shippingMethod" type="radio" value="<?php print $shipping['id']; ?>"<?php print $shipping['id'] == $this->shippingMethod['id'] ? ' checked="checked"' : ''; ?>><label for="ctrl_shipping_<?php print $shipping['id']; ?>"><?php print $shipping['title']; ?> (<?php print formatPrice($shipping['shippingFee'], true); ?>)</label>
+       			</div>
+      		<?php endforeach; else: ?>
+				<?php print $GLOBALS['TL_CONFIG']['webShop_noShipping']; ?>
+			<?php endif; ?>
+		</div>
+		
+    </div>
+<?php endif; ?>

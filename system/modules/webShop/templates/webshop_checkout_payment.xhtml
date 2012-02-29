@@ -1,0 +1,15 @@
+<?php  if(!$this->guestOrder || ($this->guestOrder && $this->addressOK)): ?>
+	<div class="billing_method">
+	    <h2><?php print $GLOBALS['TL_LANG']['webShop']['paymentMethod']; ?></h2>
+		<div id="paymentData">
+	        <?php if(is_array($this->payments) && count($this->payments) > 0): foreach($this->payments as $payment): ?>
+    	        <div class="paymentSingleOption">
+        		    <input type="radio" name="paymentMethod" id="ctrl_payment_<?php print $payment['id']; ?>" value="<?php print $payment['id']; ?>"<?php print $payment['id'] == $this->paymentMethod['id'] ? ' checked="checked"' : ''; ?>> <label for="ctrl_payment_<?php print $payment['id']; ?>"><?php print $payment['title'] . ($payment['discount'] != '' ? ' ('. (stristr($payment['discount'], '%') ? $payment['discount'] : formatPrice($payment['discount'], true)) .')' : ''); ?></label>
+            	</div>
+          	<?php endforeach; endif; ?>
+			<?php if($this->paymentMessage): ?>
+					<br/><span style="color: #F00;"><?php print $this->paymentMessage; ?></span>
+			<?php endif; ?>
+		</div>
+    </div>
+<?php endif; ?>

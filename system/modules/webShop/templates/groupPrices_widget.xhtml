@@ -1,0 +1,9 @@
+<h3><?php echo $this->generateLabel(); if ($this->required): ?><span style="color:#ff0000;">*</span><?php endif; echo $this->wizard; ?></h3>
+<table border="0" cellspacing="2" cellpadding="0">
+  <tr>
+    <td><b>Gruppe</b></td>
+    <td><b><?=$GLOBALS['TL_LANG']['tl_webShop_article']['singlePrice'][0]?></b></td>
+  </tr>
+<?php print( $this->generateFormFields() ); ?><br/>
+
+</table>

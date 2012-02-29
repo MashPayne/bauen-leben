@@ -1,0 +1,43 @@
+div.mojozoom_marker {
+    cursor: crosshair;
+    position: absolute;
+}
+div.mojozoom_border {
+    border: 1px dotted black;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+div.mojozoom_fill {
+    background-color: white;
+    height: 100%;
+    left: 0;
+    opacity: 0.5;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+img.mojozoom_img {
+    border: 0 none;
+    padding: 0;
+}
+div.mojozoom_imgctr {
+	background-color: white;
+    border: 1px solid #CCCCCC;
+	margin-top: -6px;
+	margin-left: 34px;    
+    position: absolute;
+	width: 398px;
+	height: 260px;
+}
+#zoomArea {
+    border: 1px solid #999999;
+    height: 350px;
+    left: 294px;
+    position: absolute;
+    top: 25px;
+    width: 400px;
+    z-index: 9999;
+}

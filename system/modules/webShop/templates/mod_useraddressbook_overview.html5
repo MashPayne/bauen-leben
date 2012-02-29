@@ -1,0 +1,52 @@
+<div class="currendAddresses box-grey left">
+	<div class="primaryAddress">
+	<h2><?php print $GLOBALS['TL_LANG']['webShop']['primary_address']; ?></h2>
+	<?php foreach($this->addresses as $id => $addr): ?>
+  		<?php if($id == $this->primaryid): ?>
+			<div class="singleAddress">
+
+		  	<?php foreach($addr as $key => $value): if(strlen($value) == 0 || strlen($GLOBALS['TL_LANG']['tl_member'][$key][0]) == 0) continue; ?>
+ 				  <span class="addressLabel"><?php print $GLOBALS['TL_LANG']['tl_member'][$key][0]; ?>:</span> <?php print $value; ?><br/>
+    		<?php endforeach; ?>
+     		<form action="<?php print $this->href; ?>" method="post">
+     			<input type="hidden" name="REQUEST_TOKEN" value="{{REQUEST_TOKEN}}"/>
+        	<input type="hidden" name="FORM_ACTION" value="editAddress"/>
+        	<input type="hidden" name="addressID" value="<?php print $id; ?>"/>
+        	<input type="submit" class="submit" value="<?php print $GLOBALS['TL_LANG']['webShop']['lbl_editAddress']; ?>"/>
+     		</form>			
+	  </div>
+			<?php endif; ?>	  
+
+  <?php endforeach; ?>
+  </div>
+</div>
+
+<div class="currendAddresses box-grey left">
+	<div class="secondaryAddress">
+		<h2><?php print $GLOBALS['TL_LANG']['webShop']['additional_addresses']; ?></h2>
+		<?php if(count($this->addresses) > 1): foreach($this->addresses as $id => $addr): if($id == $this->primaryid) continue; ?>
+			<div class="singleAddress">
+			<?php foreach($addr as $key => $value): if(strlen($value) == 0 || strlen($GLOBALS['TL_LANG']['tl_member'][$key][0]) == 0) continue; ?>
+				<span class="addressLabel"><?php print $GLOBALS['TL_LANG']['tl_member'][$key][0]; ?>:</span> <?php print $value; ?><br/>
+			<?php endforeach; ?>
+		
+			<form action="<?php print $this->href; ?>" method="post">
+				<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}"/>
+			<input type="hidden" name="FORM_ACTION" value="editAddress"/>
+			<input type="hidden" name="addressID" value="<?php print $id; ?>"/>
+			<input type="submit" class="submit" value="<?php print $GLOBALS['TL_LANG']['webShop']['lbl_editAddress']; ?>"/>
+			<input class="submit" type="submit" name="deleteAddress" value="<?php print $GLOBALS['TL_LANG']['webShop']['delete']; ?>"/>
+			</form>			
+			</div>
+		<?php endforeach; endif; ?>
+		<div id="clear"></div>
+	</div>
+
+	<div class="newAddress">
+	<form action="<?php print $this->href; ?>" method="post">
+		<input type="hidden" name="REQUEST_TOKEN" value="{{REQUEST_TOKEN}}"/>
+		<input type="hidden" name="FORM_ACTION" value="newAddress"/>
+		<input type="submit" class="submit" value="<?php print $GLOBALS['TL_LANG']['webShop']['lbl_newAddress']; ?>"/>
+	</form>
+	</div>
+</div>

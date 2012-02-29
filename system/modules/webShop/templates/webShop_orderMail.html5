@@ -1,0 +1,131 @@
+<html>
+	<head>
+		<title><?php print $this->title; ?></title>
+		<style type="text/css">
+<?php print $this->css; ?>
+		</style>
+	</head>
+	<body>
+		<h1><?php print $this->title; ?></h1>
+		Guten Tag <?php print $this->customer['firstname'] .' '. $this->customer['lastname']; ?>,<br/>
+		<br/>
+		vielen Dank f&uuml;r Ihren Auftrag! Wir best&auml;tigen Ihnen hiermit den Eingang folgender Bestellung:<br/>
+		<br/>
+		<b>Bestellnummer</b>: <?php print $this->orderId; ?><br/>
+		<b>Bestelldatum</b>: <?php print date('d.m.Y', time()); ?><br/>
+		<?php if($this->customer['uid']): ?>
+    	<b>Kundennummer</b>: <?php print $this->customer['uid']; ?><br/><br/>
+    	<?php endif; ?>
+		
+
+    <table border="0" cellspacing="0" cellpadding="2" class="orderDetails">
+    	<tr class="heading">
+    		<td class="articleNumber">Artikelnummer</td>
+    		<td class="articleName">Artikel</td>
+			<td class="articleQTY">Menge</td>
+			<td class="articlePrice">Einzelpreis</td>
+			<td class="articleSum">Summe</td>
+    	</tr>
+			<?php $x = 1; foreach($this->items as $item): $x++; ?>
+			  <tr class="item_<?php print ($x % 2 ? 'odd' : 'even'); ?>">
+			  	<td class="articleNumber"><?php print $item->productid; ?></td>
+			  	<td class="articleName">
+			  		<?php print $item->title; ?>
+			  		<?php if($item->type == 'articleVariants'): print ' - '. $item->subtitle; endif; ?><br/>
+			  		<?php print $item->teaser; ?>
+			  		<?php print strlen($item->optionList) ? '<br/>'. $item->optionList : '';?>
+			  		<?php print strlen($item->comment) ? '<br/><b>'. $item->comment .'</b>' : '';?>
+			  	  </td>
+				  <td class="articleQTY"><?php print $item->qty; ?></td>
+					<td class="articlePrice"><?php print formatPrice($item->price, true); ?></td>
+					<td class="articleSum"><?php print formatPrice($item->sum, true); ?></td>
+			  </tr>
+			<?php endforeach; ?>
+			<tr class="articleSum">
+				<td colspan="4">Zwischensumme:</td>
+				<td class="c2"><?php print formatPrice($this->articleSum, true); ?></td>
+			</tr>
+			
+			<?php // Shipping ?>
+			<tr>
+			<?php if($this->shipping['shippingPriceType'] != 'shippingInfo'): ?>
+        <td colspan="4">Versand: <?php print $this->shipping['title']; ?></td>
+        <td class="c2"><?php print formatPrice($this->shipping['shippingFee'], true); ?></td>
+      <?php else: ?>
+        <td colspan="4">Versand: <?php print $this->shipping['shippingInfo']; ?></td>
+        <td class="c2">-</td>
+      <?php endif; ?>
+			</tr>
+			
+			<?php // Payment ?>
+			<tr>
+				<td colspan="4">Zahlungsart: <?php print $this->payment['title']; ?></td>
+				<td class="c2"><?php print formatPrice($this->payment['paymentFee'], true); ?></td>
+			</tr>
+			
+			<?php // Coupons ?>
+			
+      <?php if(count($this->coupons)): foreach($this->coupons as $coupon): ?>
+        <tr>
+        <?php if(stristr($coupon['amount'], '%')): ?>
+	          <td colspan="4"><?php print $coupon['code']; ?> <?php print $coupon['amount']; ?></td>
+	          <td class="c2"><?php print formatPrice($coupon['value'], true); ?></td>
+          <?php else: ?>
+	          <td colspan="4"><?php print $coupon['code']; ?></td>
+	          <td class="c2"><?php print $coupon['amount']; ?></td>
+          <?php endif; ?>
+        </tr>
+      <?php endforeach; endif; ?>
+      
+			<?php // Discounts ?>
+			<?php if(count($this->discounts)): foreach($this->discounts as $discount): ?>
+        <tr>
+          <td colspan="4"><?php print $discount['title']; ?></td>
+          <td class="c2"><?php print $discount['value']; ?></td>
+        </tr>
+      <?php endforeach; endif; ?>
+      
+			<?php // total ?>
+			<tr>
+				<td colspan="4">Gesamtbetrag</td>
+				<td class="c2"><?php print formatPrice($this->sum, true); ?></td>
+			</tr>
+			<?php if($this->calcBrutto && count($this->taxes)): foreach($this->taxes as $tax): if($tax['sum'] == 0) continue; ?>
+        <tr>
+          <td colspan="4"><?php print $this->taxExInc .' '. ($tax['tax_rate']  * 1); ?>% MwSt.</td>
+          <td class="c2"><?php print formatPrice($tax['sum'], true); ?></td>
+        </tr>
+      <?php endforeach; endif; ?>
+			<tr>
+				<td colspan="4">Rechnungsbetrag:</td>
+				<td class="c2"><?php print formatPrice($this->paymentSum, true); ?></td>
+			</tr>
+			<tr>
+				<td>
+		      <b>Lieferanschrift</b><br/>
+		      <?php if($this->shippingAddress['company']): ?>
+		      <?php print $this->shippingAddress['company']; ?><br/>
+		      <?php endif; ?>
+		      <?php printf('%s %s<br/>%s<br/>%s-%s %s<br/>', $this->shippingAddress['firstname'], $this->shippingAddress['lastname'], $this->shippingAddress['street'], ucfirst($this->shippingAddress['country']), $this->shippingAddress['postal'], $this->shippingAddress['city']); ?>
+				</td>
+				<td colspan="4">
+		      <b>Rechnungsanschrift</b><br/>
+		      <?php if($this->paymentAddress['company']): ?>
+		      <?php print $this->paymentAddress['company']; ?><br/>
+		      <?php endif; ?>
+		      <?php printf('%s %s<br/>%s<br/>%s-%s %s<br/>%s', $this->paymentAddress['firstname'], $this->paymentAddress['lastname'], $this->paymentAddress['street'], ucfirst($this->paymentAddress['country']), $this->paymentAddress['postal'], $this->paymentAddress['city'], $this->phone); ?>
+				</td>
+			</tr>
+			<?php if(strlen($this->message)): ?>
+			<tr>
+				<td colspan="2"><br/><br/><b>Ihre Nachricht an uns:</b><br/><?php print $this->message; ?></td>
+			</tr>
+			<?php endif; ?>
+    </table>
+		<br/>
+    	<?php print $this->paymentMessage; ?>
+		<br/>
+		
+		<?php print $this->email_footer; ?>
+	</body>
+</html>

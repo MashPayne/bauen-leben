@@ -1,0 +1,19 @@
+<div class="webshop_coupons">
+<h2><?php print $GLOBALS['TL_LANG']['webShop']['coupon']; ?></h2>
+<input type="text" name="couponcode" value=""/><input type="submit" class="submit" value="Gutschein hinzufügen"/>
+<?php if(is_array($this->couponErrors)): ?>
+	<div class="couponErrors" style="padding: 5px 0px; color: #F00; font-weight: bold;">
+	    <?php foreach($this->couponErrors as $err): ?>
+	        <span class="couponError"><?php print $err; ?></span>
+	    <?php endforeach; ?>
+	</div>
+<?php endif; ?>
+  
+<?php if(count($this->coupons)): ?>
+<div class="coupons">
+   	<?php foreach($this->coupons as $coupon): ?>
+     		<div class="singleCoupon"><?php printf('%s: %s', $coupon['code'], stristr($coupon['amount'], '%') ? $coupon['amount'] : formatPrice($coupon['amount'], true)); ?></div>
+   	<?php endforeach; ?>
+</div>
+<?php endif; ?>
+</div>

@@ -1,0 +1,15 @@
+<div class="subCategoryItems">
+	<h2><?php print $GLOBALS['TL_LANG']['webShop']['morecategories']; ?></h2>
+	<?php foreach($this->categories as $cat): ?>
+	  <div class="subCategoryItem">
+	  	<?php if(strlen($cat['img'])): ?>
+			  <div class="subCategoryImage">
+			  	<a href="<?php print $cat['href']; ?>"><img src="<?php print $cat['img']; ?>" alt="<?php print $cat['title']; ?>" title="<?php print $cat['title']; ?>"/></a>
+				</div>
+			<?php endif; ?>
+			<div class="subCategoryTitle">
+				<a href="<?php print $cat['href']; ?>"><?php print $cat['title']; ?></a>
+			</div>
+		</div>
+	<?php endforeach; ?>
+</div>

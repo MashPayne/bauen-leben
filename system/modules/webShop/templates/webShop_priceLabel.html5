@@ -1,0 +1,14 @@
+<?php if($this->isSpecialPrice): ?>
+  <span <?php if(!$this->isSpecialPrice): ?>id="ctrlBillingPrice" <?php endif; ?> class="valuePrice<?php if($this->isSpecialPrice):?> hasSpecialPrice<?php endif; ?>"><?php print formatPrice($this->singlePrice, true); ?></span>
+  <span <?php if($this->isSpecialPrice): ?>id="ctrlBillingPrice" <?php endif; ?> class="specialOffer"><?php print formatPrice($this->price, true); ?></span>
+  <label class="taxInfo"><?php print $this->taxLabel; ?></label>
+  <span class="shippingNotice"><?php print $this->shippingNotice; ?></span>
+<?php else: ?>
+  <span class="valuePrice"><?php print formatPrice($this->price, true); ?></span>
+  <span class="taxInfo"><?php print $this->taxLabel; ?></span>
+  <span class="shippingNotice"><?php print $this->shippingNotice; ?></span>
+<?php endif; ?>
+
+<?php if($this->hasvpe): ?>
+  <div class="vpe">Grundpreis pro <?php print $this->vpeunit; ?>: <?php print formatPrice($this->vpe, true); ?></div>
+<?php endif; ?>

@@ -1,0 +1,36 @@
+<div class="orderDetails <?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+  <?php if ($this->headline): ?>
+    <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+  <?php endif; ?>
+
+  <ul class="orderHeadline">
+    <li class="aTitle orderCol">Artikel</li>
+    <li class="aPrice orderCol">Preis</li>
+    <li class="aQTY orderCol">Menge</li>
+    <li class="aSUM orderCol">Summe</li>
+  </ul>
+  
+  <?php foreach($this->details as $item): ?>
+    <ul class="orderBody">
+      <li class="orderCol">
+        <?php if($item['download']): ?>
+          <a href="<?php print $item['download']; ?>"><?php print $item['title']; ?></a>
+        <?php else: ?>
+          <?php print $item['title']; ?>
+        <?php endif; ?>
+        <?php if($item['articleComment']): ?>
+          <div class="orderComment"><?php print $item['articleComment']; ?></div>
+        <?php endif; ?>
+      </li>
+      <li class="orderCol"><?php print formatPrice($item['singlePrice'], true); ?></li>
+      <li class="orderCol"><?php print $item['qty']; ?></li>
+      <li class="orderCol"><?php print formatPrice($item['qty'] * $item['singlePrice'], true); ?></li>
+    </ul>
+    <div style="clear: both;"></div>
+  <?php endforeach; ?>
+
+<!-- indexer::stop -->
+<span><a style="margin-top:20px;" class="submit" href="JavaScript:history.back();" title="<?php print $GLOBALS['TL_LANG']['webShop']['back']; ?>"><?php print $GLOBALS['TL_LANG']['webShop']['back']; ?></a></span>
+<!-- indexer::continue -->
+
+</div>

@@ -1,0 +1,17 @@
+<html>
+	<head>
+		<title>Zahlungserinnerung</title>
+	</head>
+	<body>
+Hallo <?php print $this->customer['firstname'] .' '. $this->customer['lastname']; ?><br/> 
+<br/>
+Sie haben am <?php print date('d.m.Y', $this->datim); ?> eine Bestellung über <?php print formatPrice($this->price, true); ?> in unserem Onlineshop aufgegeben.<br/>
+<br/>
+Leider haben wir bis heute keinen Zahlungseingang feststellen können.<br/>
+Bitte gleichen Sie den offenen Rechnungsbetrag bis spätestens <?php print date('d.m.Y', time() + (5 * 86400)); ?> aus.<br/>
+<br/>
+
+<?php print $GLOBALS['TL_CONFIG']['webShop_email_footer']?>
+
+	</body>
+</html>

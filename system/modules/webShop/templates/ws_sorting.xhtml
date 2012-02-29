@@ -1,0 +1,17 @@
+<!-- indexer::stop -->
+
+<div class="ws_sortbox">
+  <label for="ctrl_sortbox"><?php print $this->lblSorting; ?></label><select id="ctrl_sortbox">
+    <?php foreach($this->links as $link): ?>
+      <option <?php print $link['selected'] ? 'selected="selected" ' : ''; ?> value="<?php print $link['href']; ?>"><?php print $link['title']; ?></option>
+    <?php endforeach; ?>
+  </select>
+</div>
+
+<script type="text/javascript">
+  $('ctrl_sortbox').addEvent('change', function() {
+    document.location.href = $('ctrl_sortbox').value;
+  });
+</script>
+
+<!-- indexer::continue -->
